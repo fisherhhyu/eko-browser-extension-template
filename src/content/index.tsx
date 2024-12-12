@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
               }
           }
       } catch (e) {
-          console.log('消息处理异常', e)
+          console.log('onMessage error', e)
       }
   })()
   return true
