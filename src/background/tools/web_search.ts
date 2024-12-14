@@ -20,7 +20,7 @@ export class WebSearch implements Tool {
           description: "search for keywords",
         },
         maxResults: {
-          type: "number",
+          type: "integer",
           description: "Maximum search results, default 5",
         },
       },

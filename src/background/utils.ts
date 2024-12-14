@@ -9,6 +9,25 @@ export function getCurrentTabId(): Promise<number | undefined> {
   });
 }
 
+export async function getPageSize(): Promise<{ width: number; height: number }> {
+  let tabId = await getCurrentTabId();
+  let injectionResult = await chrome.scripting.executeScript({
+    target: { tabId: tabId as number },
+    func: () => [
+      window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth,
+      window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight,
+    ],
+  });
+  return {
+    width: injectionResult[0].result[0] as number,
+    height: injectionResult[0].result[1] as number,
+  };
+}
+
 export function sleep(time: number): Promise<void> {
   return new Promise((resolve) => setTimeout(() => resolve(), time));
 }

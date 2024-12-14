@@ -16,6 +16,9 @@ export interface Tool {
  }
 
  export interface Propertie {
-    type: 'string' | 'number' | 'bool';
-    description?: string
+    type: 'string' | 'integer' | 'boolean' | 'array' | 'object';
+    description?: string;
+    items?: InputSchema;
+    enum?: Array<string|number>;
+    properties?: Properties;
  }
