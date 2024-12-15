@@ -1,12 +1,12 @@
 /**
- * 通用 JS 函数
+ * Common JS function
  */
 if (!window.eko) {
     window.eko = {}
 }
 
 /**
- * 提取网页内容
+ * Extract html content
  */
 eko.extractHtmlContent = function (element) {
     element = element || document.body
@@ -37,10 +37,10 @@ eko.extractHtmlContent = function (element) {
 }
 
 /**
- * 元素文本（去除连续空白和换行）
+ * Element text (remove consecutive spaces and line breaks)
  * 
- * @param {HTMLElement|string} object 元素/字符串
- * @returns 文本
+ * @param {HTMLElement|string} object
+ * @returns text
  */
 eko.cleanText = function(object) {
     let str = (typeof object == 'string') ? object : object?.innerText
@@ -48,16 +48,16 @@ eko.cleanText = function(object) {
 }
 
 /**
- * 睡眠
+ * sleep
  * 
- * @param {number} time 毫秒
+ * @param {number} time millisecond
  */
 eko.sleep = function(time) {
     return new Promise(resolve => setTimeout(() => resolve(), time))
 }
 
 /**
- * 元素是否可见
+ * element displayed
  * 
  * @param {HTMLElement} element 
  */
@@ -66,9 +66,9 @@ eko.isDisplayed = function (element) {
 }
 
 /**
- * 点击
+ * click
  * 
- * @param {HTMLElement} element 元素
+ * @param {HTMLElement} element
  */
 eko.click = function(element) {
     if (element.click) {
@@ -83,9 +83,10 @@ eko.click = function(element) {
 }
 
 /**
- * 触发模拟输入
+ * Trigger simulated input
  */
 eko.sendKeys = function(element, str, clear, keypress) {
+    element.focus && element.focus()
     if (clear) {
         for (let i = 0; i < element.value.length; i++) {
             element.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace' }))
@@ -105,7 +106,7 @@ eko.sendKeys = function(element, str, clear, keypress) {
 }
 
 /**
- * 等待Dom改变
+ * Waiting for Dom to change
  */
 eko.waitForDomChanged = function (targetElement, fun, timeout, config, firstExecute) {
     targetElement = targetElement || document.body
@@ -139,7 +140,7 @@ eko.waitForDomChanged = function (targetElement, fun, timeout, config, firstExec
 }
 
 /**
- * 等待页面加载完成 onload 后
+ * Wait for the page to finish loading after onload
  */
 eko.waitLoaded = async function() {
     await eko.waitForDomChanged(document.body, () => document.readyState == 'complete', 5000, {}, true)
@@ -147,7 +148,7 @@ eko.waitLoaded = async function() {
 }
 
 /**
- * 等待元素出现
+ * Wait for the element to present
  */
 eko.waitForElementPresent = function (targetElement, cssSelector, timeout) {
     targetElement = targetElement || document.body
@@ -155,7 +156,7 @@ eko.waitForElementPresent = function (targetElement, cssSelector, timeout) {
 }
 
 /**
- * 等待元素可见
+ * Wait for the element to displayed
  */
 eko.waitForElementDisplayed = function (targetElement, cssSelector, timeout) {
     targetElement = targetElement || document.body
@@ -175,7 +176,7 @@ eko.waitForElementDisplayed = function (targetElement, cssSelector, timeout) {
 }
 
 /**
- * 等待元素消失
+ * Wait for the element to present
  */
 eko.waitForElementNotPresent = function (targetElement, cssSelector, timeout) {
     targetElement = targetElement || document.body
@@ -183,7 +184,7 @@ eko.waitForElementNotPresent = function (targetElement, cssSelector, timeout) {
 }
 
 /**
- * 等待元素不可见
+ * Waiting for element to be invisible
  */
 eko.waitForElementNotDisplayed = function (targetElement, cssSelector, timeout) {
     targetElement = targetElement || document.body

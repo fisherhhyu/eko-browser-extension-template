@@ -9,8 +9,10 @@ export function getCurrentTabId(): Promise<number | undefined> {
   });
 }
 
-export async function getPageSize(): Promise<{ width: number; height: number }> {
-  let tabId = await getCurrentTabId();
+export async function getPageSize(tabId?: number): Promise<[number, number]> {
+  if (!tabId) {
+    tabId = await getCurrentTabId();
+  }
   let injectionResult = await chrome.scripting.executeScript({
     target: { tabId: tabId as number },
     func: () => [
@@ -22,10 +24,10 @@ export async function getPageSize(): Promise<{ width: number; height: number }> 
         document.body.clientHeight,
     ],
   });
-  return {
-    width: injectionResult[0].result[0] as number,
-    height: injectionResult[0].result[1] as number,
-  };
+  return [
+    injectionResult[0].result[0] as number,
+    injectionResult[0].result[1] as number
+  ];
 }
 
 export function sleep(time: number): Promise<void> {
