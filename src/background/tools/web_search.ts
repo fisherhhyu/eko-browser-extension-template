@@ -10,7 +10,7 @@ export class WebSearch implements Tool {
   input_schema: InputSchema;
 
   constructor() {
-    this.name = "webSearch";
+    this.name = "web_search";
     this.description = "A web search tool";
     this.input_schema = {
       type: "object",
