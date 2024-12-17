@@ -38,7 +38,14 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: "public", to: "../" },
-                { from: "src/script", to: "../script" }
+                {
+                    from: 'node_modules/test-eko-veasion/dist/extension.js',
+                    to: "../eko/extension.js"
+                },
+                {
+                    from: 'node_modules/test-eko-veasion/dist/extension/script',
+                    to: "../eko/script"
+                }
             ],
             options: {},
         })

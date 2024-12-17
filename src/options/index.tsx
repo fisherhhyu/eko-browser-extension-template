@@ -14,10 +14,10 @@ const OptionsPage = () => {
   });
 
   useEffect(() => {
-    chrome.storage.sync.get(["systemConfig"], (result) => {
-      if (result.systemConfig) {
-        setConfig(result.systemConfig);
-        form.setFieldsValue(result.systemConfig);
+    chrome.storage.sync.get(["llmConfig"], (result) => {
+      if (result.llmConfig) {
+        setConfig(result.llmConfig);
+        form.setFieldsValue(result.llmConfig);
       }
     });
   }, []);
@@ -29,7 +29,7 @@ const OptionsPage = () => {
         setConfig(values);
         chrome.storage.sync.set(
           {
-            systemConfig: values,
+            llmConfig: values,
           },
           () => {
             message.success("Save Success!");
