@@ -39,11 +39,11 @@ module.exports = {
             patterns: [
                 { from: "public", to: "../" },
                 {
-                    from: 'node_modules/test-eko-veasion/dist/extension.js',
+                    from: 'node_modules/ekoai/dist/extension.js',
                     to: "../eko/extension.js"
                 },
                 {
-                    from: 'node_modules/test-eko-veasion/dist/extension/script',
+                    from: 'node_modules/ekoai/dist/extension/script',
                     to: "../eko/script"
                 }
             ],
