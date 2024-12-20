@@ -9,7 +9,7 @@ const OptionsPage = () => {
 
   const [config, setConfig] = useState({
     apiUrl: "https://api.anthropic.com/v1/messages",
-    modelName: "claude-3-sonnet",
+    modelName: "claude-3-5-sonnet-20241022",
     apiKey: "",
   });
 
