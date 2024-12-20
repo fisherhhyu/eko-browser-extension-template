@@ -39,8 +39,8 @@ module.exports = {
             patterns: [
                 { from: "public", to: "../" },
                 {
-                    from: 'node_modules/ekoai/dist/extension.js',
-                    to: "../eko/extension.js"
+                    from: 'node_modules/ekoai/dist/extension_content_script.js',
+                    to: "../eko/extension_content_script.js"
                 },
                 {
                     from: 'node_modules/ekoai/dist/extension/script',

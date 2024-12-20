@@ -42,9 +42,9 @@ const OptionsPage = () => {
   };
 
   const modelOptions = [
-    { value: "claude-3-haiku", label: "Claude 3 Haiku" },
-    { value: "claude-3-sonnet", label: "Claude 3 Sonnet (default)" },
-    { value: "claude-3-opus", label: "Claude 3 Opus" },
+    { value: "claude-3-5-haiku-20241022", label: "Claude 3.5 Haiku" },
+    { value: "claude-3-5-sonnet-20241022", label: "Claude 3.5 Sonnet (default)" },
+    { value: "claude-3-opus-20240229", label: "Claude 3 Opus" },
   ];
 
   return (
