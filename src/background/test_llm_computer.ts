@@ -38,10 +38,10 @@ export async function testWebSearchWithComputer() {
       new tools.ExtractContent() as ToolDefinition,
     ],
   };
-  let toolMap: { [key: string]: Tool } = {};
+  let toolMap: { [key: string]: Tool<any, any> } = {};
   for (let i = 0; i < params.tools.length; i++) {
     let tool = params.tools[i];
-    toolMap[tool.name] = tool as Tool;
+    toolMap[tool.name] = tool as Tool<any, any>;
   }
   do {
     printLog(messages[messages.length - 1]);
