@@ -33,7 +33,7 @@ export async function testWebSearchWithComputer() {
     tools: [
       new tools.TabManagement() as ToolDefinition,
       new tools.OpenUrl() as ToolDefinition,
-      new tools.ComputerWeb() as ToolDefinition,
+      new tools.BrowserUse() as ToolDefinition,
       new tools.ExportFile() as ToolDefinition,
       new tools.ExtractContent() as ToolDefinition,
     ],

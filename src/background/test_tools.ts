@@ -58,7 +58,7 @@ async function computerWeb(
 ) {
   let tabId = await utils.getCurrentTabId();
   context.variables.set("tabId", tabId);
-  let computer = new tools.ComputerWeb();
+  let computer = new tools.BrowserUse();
   let result = await computer.execute(context, { action, coordinate, text });
   console.log("result: ", result);
   return result;
