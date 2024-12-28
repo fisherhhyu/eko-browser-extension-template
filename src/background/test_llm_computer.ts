@@ -32,10 +32,8 @@ export async function testWebSearchWithComputer() {
     },
     tools: [
       new tools.TabManagement() as ToolDefinition,
-      new tools.OpenUrl() as ToolDefinition,
       new tools.BrowserUse() as ToolDefinition,
       new tools.ExportFile() as ToolDefinition,
-      new tools.ExtractContent() as ToolDefinition,
     ],
   };
   let toolMap: { [key: string]: Tool<any, any> } = {};
@@ -61,16 +59,21 @@ export async function testWebSearchWithComputer() {
       let toolCall = toolCalls[i];
       let tool = toolMap[toolCall.name];
       let result = (await tool.execute(context, toolCall.input)) as any;
-      if (result.image && result.image.type == "base64") {
+      if (result.image && result.image.type) {
+        let content: any[] = [{
+          type: "image",
+          source: result.image,
+        }]
+        if (result.text) {
+          content.push({
+            type: 'text',
+            text: result.text
+          })
+        }
         user_content.push({
           type: "tool_result",
           tool_use_id: toolCall.id,
-          content: [
-            {
-              type: "image",
-              source: result.image,
-            },
-          ],
+          content: content,
         });
       } else {
         user_content.push({

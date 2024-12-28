@@ -10,8 +10,8 @@ chrome.runtime.onMessage.addListener(async function (
 ) {
   if (request.type == "run") {
     // await testTools();
-    await testWebSearchWithLLM();
-    // await testWebSearchWithComputer();
+    // await testWebSearchWithLLM();
+    await testWebSearchWithComputer();
     // await testWebSearchWithWorkflow();
   }
 });

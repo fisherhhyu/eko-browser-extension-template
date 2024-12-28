@@ -58,7 +58,7 @@ export async function testWebSearchWithLLM() {
       let toolCall = toolCalls[i];
       let tool = toolMap[toolCall.name];
       let result = (await tool.execute(context, toolCall.input)) as any;
-      if (result.image && result.image.type == "base64") {
+      if (result.image && result.image.type) {
         user_content.push({
           type: "tool_result",
           tool_use_id: toolCall.id,

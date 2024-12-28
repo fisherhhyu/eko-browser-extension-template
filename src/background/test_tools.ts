@@ -1,10 +1,8 @@
-import { ExecutionContext } from "ekoai/types";
-import { tools, utils } from "ekoai/extension";
+import { ElementRect, ExecutionContext, Tool } from "ekoai/types";
+import { getLLMConfig, tools, utils } from "ekoai/extension";
+import { ClaudeProvider } from "ekoai";
 
-let context = {
-  variables: new Map<string, unknown>(),
-  tools: [],
-} as any as ExecutionContext;
+var context: ExecutionContext;
 
 async function testWebSearch() {
   let webSearch = new tools.WebSearch();
@@ -13,10 +11,10 @@ async function testWebSearch() {
   return result;
 }
 
-async function testTabManagement(action: string) {
+async function testTabManagement(commond: string) {
   let tabManagement = new tools.TabManagement();
-  let result = await tabManagement.execute(context, { action });
-  console.log("result: ", action, result);
+  let result = await tabManagement.execute(context, { commond });
+  console.log("result: ", commond, result);
   return result;
 }
 
@@ -44,6 +42,33 @@ async function openUrl(url: string, newWindow: boolean) {
   return result;
 }
 
+async function findElementPosition(
+  task_prompt: string
+): Promise<ElementRect | null> {
+  let find_element_position = new tools.FindElementPosition();
+  let result = await find_element_position.execute(context, {
+    task_prompt: task_prompt,
+  });
+  console.log("find_element_position", result);
+  return result;
+}
+
+async function elementClick(task_prompt: string) {
+  let element_click = new tools.ElementClick();
+  let result = await element_click.execute(context, {
+    task_prompt: task_prompt,
+  });
+  console.log("element_click", result);
+  return result;
+}
+
+async function type(rect: ElementRect, text: string) {
+  let tabId = await utils.getCurrentTabId();
+  let result = await tools.browser.type(tabId, text, [rect.left, rect.top]);
+  console.log("type", result);
+  return result;
+}
+
 async function screenshot() {
   let screenshot = new tools.Screenshot();
   let result = await screenshot.execute(context, {});
@@ -53,41 +78,67 @@ async function screenshot() {
 
 async function computerWeb(
   action: string,
-  coordinate?: [number, number],
+  index?: number,
   text?: string
 ) {
   let tabId = await utils.getCurrentTabId();
   context.variables.set("tabId", tabId);
   let computer = new tools.BrowserUse();
-  let result = await computer.execute(context, { action, coordinate, text });
+  let result = await computer.execute(context, { action, index, text });
   console.log("result: ", result);
   return result;
 }
 
 async function computer() {
-  await utils.sleep(3000);
-  await computerWeb("mouse_move", [544, 290]);
-  await computerWeb("left_click");
-  await computerWeb("clear_input");
-  await computerWeb("type", null, "谢扬");
-  await utils.sleep(1000);
-  await computerWeb("mouse_move", [544, 335]);
-  await computerWeb("left_click");
-  await utils.sleep(1000);
-  await computerWeb("scroll_to", [0, 1500]);
-  let result = await computerWeb("screenshot") as any;
-  let image = result.image;
-  let image_base64 = 'data:' + image.media_type + ';base64,' + image.data;
-  console.log('image', image_base64);
+  await openUrl("https://www.baidu.com", true);
+  let result = await computerWeb("screenshot_extract_element");
+  let elements = result.text.split("\n");
+  let inputIdx;
+  for (let i = 0; i < elements.length; i++) {
+    let str = elements[i];
+    if (str.indexOf('id="kw"') > -1) {
+      inputIdx = str.split(":")[0].replace("[", "").replace("]", "");
+    }
+  }
+  await computerWeb("input_text", +inputIdx, "谢扬");
+  result = await computerWeb("screenshot_extract_element");
+  elements = result.text.split("\n");
+  let butIdx;
+  for (let i = 0; i < elements.length; i++) {
+    let str = elements[i];
+    if (str.indexOf('id="su"') > -1) {
+      butIdx = str.split(":")[0].replace("[", "").replace("]", "");
+    }
+  }
+  await computerWeb("click", +butIdx);
+}
+
+async function test_task_prompt() {
+  // open new tab
+  await openUrl("https://www.baidu.com", true);
+  let rect = await findElementPosition("查找搜索输入框");
+  if (rect) {
+    // input -> text
+    await type(rect, "谢扬");
+    await utils.sleep(500);
+    // click the search button
+    await elementClick("点击搜索按钮");
+  }
 }
 
 export async function testTools() {
-    await testWebSearch();
-    // await testTabManagement("current_tab");
-    // await testTabManagement("tab_all");
-    // await exportFile();
-    // await extractContent();
-    // await openUrl('https://www.google.com', true);
-    // await screenshot();
-    // await computer();
+  let apiKey = (await getLLMConfig()).apiKey;
+  context = {
+    llmProvider: new ClaudeProvider(apiKey),
+    variables: new Map<string, unknown>(),
+    tools: new Map<string, Tool<any, any>>(),
+  };
+  // test
+  // await testWebSearch();
+  // await testTabManagement("tab_all");
+  // await exportFile();
+  // await extractContent();
+  // await openUrl("https://www.google.com", true);
+  // await screenshot();
+  await computer();
 }
