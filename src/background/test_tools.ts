@@ -1,5 +1,5 @@
 import { ElementRect, ExecutionContext, Tool } from "ekoai/types";
-import { getLLMConfig, tools, utils } from "ekoai/extension";
+import { getLLMConfig, tools, browser, utils } from "ekoai/extension";
 import { ClaudeProvider } from "ekoai";
 
 var context: ExecutionContext;
@@ -64,7 +64,7 @@ async function elementClick(task_prompt: string) {
 
 async function type(rect: ElementRect, text: string) {
   let tabId = await utils.getCurrentTabId();
-  let result = await tools.browser.type(tabId, text, [rect.left, rect.top]);
+  let result = await browser.type(tabId, text, [rect.left, rect.top]);
   console.log("type", result);
   return result;
 }

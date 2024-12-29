@@ -1,4 +1,4 @@
-import { ClaudeProvider } from "ekoai";
+import { ClaudeProvider, OpenaiProvider } from "ekoai";
 import {
   ExecutionContext,
   Message,
@@ -9,15 +9,22 @@ import {
 import { tools, getLLMConfig } from "ekoai/extension";
 
 export async function testWebSearchWithComputer() {
-  let apiKey = (await getLLMConfig()).apiKey;
-  if (!apiKey) {
+  let config = await getLLMConfig();
+  if (!config && !config.apiKey) {
     throw Error("Please configure apiKey");
   }
-  let llmProvider = new ClaudeProvider(apiKey);
+  let llmProvider = config.llm == "openai"
+      ? new OpenaiProvider(config.apiKey, config.modelName, {
+          baseURL: config.baseURL,
+        })
+      : new ClaudeProvider(config.apiKey, config.modelName, {
+          baseURL: config.baseURL,
+        });
   let context = {
+    llmProvider,
     variables: new Map<string, unknown>(),
-    tools: [],
-  } as any as ExecutionContext;
+    tools: new Map<string, Tool<any, any>>(),
+  } as ExecutionContext;
 
   let messages: Message[] = [
     {

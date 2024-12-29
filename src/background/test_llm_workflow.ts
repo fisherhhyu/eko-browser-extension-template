@@ -1,28 +1,23 @@
-import {
-  ClaudeProvider,
-  ToolRegistry,
-  WorkflowGenerator,
-  WorkflowParser,
-} from "ekoai";
+import { Eko, WorkflowParser } from "ekoai";
 import { tools, getLLMConfig } from "ekoai/extension";
 
 export async function testWebSearchWithWorkflow() {
-  let apiKey = (await getLLMConfig()).apiKey;
-  if (!apiKey) {
+  let config = await getLLMConfig();
+  if (!config && !config.apiKey) {
     throw Error("Please configure apiKey");
   }
 
-  let llmProvider = new ClaudeProvider(apiKey);
+  let eko = new Eko({
+    llm: config.llm as any,
+    apiKey: config.apiKey,
+    modelName: config.modelName,
+    options: { baseURL: config.baseURL },
+  });
 
-  let toolRegistry = new ToolRegistry();
-  toolRegistry.registerTool(new tools.WebSearch());
-  toolRegistry.registerTool(new tools.ExportFile());
+  eko.registerTool(new tools.WebSearch());
+  eko.registerTool(new tools.ExportFile());
 
-  const generator = new WorkflowGenerator(llmProvider, toolRegistry);
-  const workflow = await generator.generateWorkflow(
-    "搜索谢扬信息，汇总成表格导出"
-  );
-  const dsl = WorkflowParser.serialize(workflow);
-  console.log("dsl", dsl);
-  await workflow.execute();
+  const workflow = await eko.generateWorkflow("搜索谢扬信息，汇总成表格导出");
+  console.log("dsl", WorkflowParser.serialize(workflow));
+  await eko.execute(workflow);
 }
