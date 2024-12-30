@@ -9,9 +9,11 @@ const OptionsPage = () => {
 
   const [config, setConfig] = useState({
     llm: "claude",
-    baseURL: "https://api.anthropic.com",
-    modelName: "claude-3-5-sonnet-20241022",
     apiKey: "",
+    modelName: "claude-3-5-sonnet-20241022",
+    options: {
+      baseURL: "https://api.anthropic.com",
+    },
   });
 
   useEffect(() => {
@@ -40,7 +42,7 @@ const OptionsPage = () => {
           }
         );
       })
-      .catch((errorInfo) => {
+      .catch(() => {
         message.error("Please check the form field");
       });
   };
@@ -65,12 +67,14 @@ const OptionsPage = () => {
   const handleLLMChange = (value: string) => {
     const newConfig = {
       llm: value,
-      baseURL:
-        value === "openai"
-          ? "https://api.openai.com/v1"
-          : "https://api.anthropic.com",
-      modelName: modelOptions[value][0].value,
       apiKey: "",
+      modelName: modelOptions[value][0].value,
+      options: {
+        baseURL:
+          value === "openai"
+            ? "https://api.openai.com/v1"
+            : "https://api.anthropic.com",
+      },
     };
     setConfig(newConfig);
     form.setFieldsValue(newConfig);
@@ -99,7 +103,7 @@ const OptionsPage = () => {
             </Select>
           </Form.Item>
           <Form.Item
-            name="baseURL"
+            name={["options", "baseURL"]}
             label="Base URL"
             rules={[
               {
@@ -108,7 +112,7 @@ const OptionsPage = () => {
               },
             ]}
           >
-            <Input placeholder="Please enter the base URL" allowClear />
+            <Input placeholder="Please enter the base URL" />
           </Form.Item>
 
           <Form.Item

@@ -14,12 +14,8 @@ export async function testWebSearchWithComputer() {
     throw Error("Please configure apiKey");
   }
   let llmProvider = config.llm == "openai"
-      ? new OpenaiProvider(config.apiKey, config.modelName, {
-          baseURL: config.baseURL,
-        })
-      : new ClaudeProvider(config.apiKey, config.modelName, {
-          baseURL: config.baseURL,
-        });
+      ? new OpenaiProvider(config.apiKey, config.modelName, config.options)
+      : new ClaudeProvider(config.apiKey, config.modelName, config.options);
   let context = {
     llmProvider,
     variables: new Map<string, unknown>(),

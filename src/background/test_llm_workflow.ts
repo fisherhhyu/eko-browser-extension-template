@@ -1,5 +1,6 @@
 import { Eko, WorkflowParser } from "ekoai";
 import { tools, getLLMConfig } from "ekoai/extension";
+import { EkoConfig } from "ekoai/types";
 
 export async function testWebSearchWithWorkflow() {
   let config = await getLLMConfig();
@@ -7,12 +8,7 @@ export async function testWebSearchWithWorkflow() {
     throw Error("Please configure apiKey");
   }
 
-  let eko = new Eko({
-    llm: config.llm as any,
-    apiKey: config.apiKey,
-    modelName: config.modelName,
-    options: { baseURL: config.baseURL },
-  });
+  let eko = new Eko(config as EkoConfig);
 
   eko.registerTool(new tools.WebSearch());
   eko.registerTool(new tools.ExportFile());
