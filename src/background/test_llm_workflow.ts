@@ -1,6 +1,6 @@
-import { Eko, WorkflowParser } from "ekoai";
-import { tools, getLLMConfig } from "ekoai/extension";
-import { EkoConfig } from "ekoai/types";
+import { Eko, WorkflowParser } from "@eko-ai/eko";
+import { tools, getLLMConfig } from "@eko-ai/eko/extension";
+import { EkoConfig } from "@eko-ai/eko/types";
 
 export async function testWebSearchWithWorkflow() {
   let config = await getLLMConfig();

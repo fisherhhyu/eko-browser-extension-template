@@ -1,6 +1,6 @@
-import { ElementRect, ExecutionContext, Tool } from "ekoai/types";
-import { getLLMConfig, tools, browser, utils } from "ekoai/extension";
-import { ClaudeProvider } from "ekoai";
+import { ElementRect, ExecutionContext, Tool } from "@eko-ai/eko/types";
+import { getLLMConfig, tools, browser, utils } from "@eko-ai/eko/extension";
+import { ClaudeProvider } from "@eko-ai/eko";
 
 var context: ExecutionContext;
 

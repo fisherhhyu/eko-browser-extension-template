@@ -1,12 +1,12 @@
-import { ClaudeProvider, OpenaiProvider } from "ekoai";
+import { ClaudeProvider, OpenaiProvider } from "@eko-ai/eko";
 import {
   ExecutionContext,
   Message,
   LLMParameters,
   ToolDefinition,
   Tool,
-} from "ekoai/types";
-import { tools, getLLMConfig } from "ekoai/extension";
+} from "@eko-ai/eko/types";
+import { tools, getLLMConfig } from "@eko-ai/eko/extension";
 
 export async function testWebSearchWithComputer() {
   let config = await getLLMConfig();
