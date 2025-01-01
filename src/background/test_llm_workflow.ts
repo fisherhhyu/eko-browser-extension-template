@@ -13,7 +13,7 @@ export async function testWebSearchWithWorkflow() {
   eko.registerTool(new tools.WebSearch());
   eko.registerTool(new tools.ExportFile());
 
-  const workflow = await eko.generateWorkflow("搜索谢扬信息，汇总成表格导出");
+  const workflow = await eko.generateWorkflow("Search Elon Musk information and summarize it into markdown format for export");
   console.log("dsl", WorkflowParser.serialize(workflow));
   await eko.execute(workflow);
 }

@@ -1,7 +1,7 @@
 {
-  "name": "eko-chromium-extension",
+  "name": "eko-browser-extension",
   "version": "1.0.0",
-  "description": "eko chromium extension",
+  "description": "eko browser extension",
   "main": "index.js",
   "scripts": {
     "watch": "webpack --config webpack/webpack.dev.js --watch",
@@ -15,7 +15,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fellouAI/eko-chromium-extension.git"
+    "url": "https://github.com/fellouAI/eko-browser-extension.git"
   },
   "dependencies": {
     "antd": "^5.22.4",

@@ -6,7 +6,7 @@ var context: ExecutionContext;
 
 async function testWebSearch() {
   let webSearch = new tools.WebSearch();
-  let result = await webSearch.execute(context, { query: "谢扬" });
+  let result = await webSearch.execute(context, { query: "Elon Musk" });
   console.log("result: ", result);
   return result;
 }
@@ -100,7 +100,7 @@ async function computer() {
       inputIdx = str.split(":")[0].replace("[", "").replace("]", "");
     }
   }
-  await computerWeb("input_text", +inputIdx, "谢扬");
+  await computerWeb("input_text", +inputIdx, "Elon Musk");
   result = await computerWeb("screenshot_extract_element");
   elements = result.text.split("\n");
   let butIdx;
@@ -116,13 +116,13 @@ async function computer() {
 async function test_task_prompt() {
   // open new tab
   await openUrl("https://www.baidu.com", true);
-  let rect = await findElementPosition("查找搜索输入框");
+  let rect = await findElementPosition("Find the search input box");
   if (rect) {
     // input -> text
-    await type(rect, "谢扬");
+    await type(rect, "Elon Musk");
     await utils.sleep(500);
     // click the search button
-    await elementClick("点击搜索按钮");
+    await elementClick("click the search button");
   }
 }
 

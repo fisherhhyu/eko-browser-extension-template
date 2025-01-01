@@ -25,7 +25,7 @@ export async function testWebSearchWithLLM() {
   let messages: Message[] = [
     {
       role: "user",
-      content: "搜索谢扬信息，汇总成表格导出",
+      content: "Search Elon Musk information and summarize it into markdown format for export",
     },
   ];
   let params: LLMParameters = {
