@@ -6,5 +6,5 @@ Eko Keeps Operating - Empowering language to transform human words into action -
 ```
 npm install
 
-npm run build
+npm run build:dev
 ```

@@ -12,12 +12,7 @@
     "test": "npx jest",
     "style": "prettier --write \"src/**/*.{ts,tsx}\""
   },
-  "author": "fellou.ai",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/fellouAI/eko-browser-extension.git"
-  },
   "dependencies": {
     "antd": "^5.22.4",
     "react": "^18.2.0",
