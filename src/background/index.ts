@@ -1,17 +1,9 @@
-import { testTools } from "./test_tools";
-import { testWebSearchWithLLM } from "./test_llm_search";
-import { testWebSearchWithComputer } from "./test_llm_computer";
-import { testWebSearchWithWorkflow } from "./test_llm_workflow";
+import { main } from "./first_workflow";
 
-chrome.runtime.onMessage.addListener(async function (
-  request,
-  sender,
-  sendResponse
-) {
+// Listen to messages from the browser extension
+chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
   if (request.type == "run") {
-    // await testTools();
-    // await testWebSearchWithLLM();
-    // await testWebSearchWithComputer();
-    await testWebSearchWithWorkflow();
+    // Click the RUN button to execute the main function (workflow)
+    await main();
   }
 });

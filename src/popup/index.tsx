@@ -1,7 +1,6 @@
 import { createRoot } from "react-dom/client";
 import React from "react";
 import { Button } from "antd";
-import { CaretRightOutlined } from "@ant-design/icons";
 
 const AppRun = () => {
   const handleClick = () => {
@@ -19,7 +18,6 @@ const AppRun = () => {
       <h3>Click to test</h3>
       <Button
         type="primary"
-        icon={<CaretRightOutlined />}
         onClick={handleClick}
         className="flex items-center justify-center"
       >
