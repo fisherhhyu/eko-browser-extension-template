@@ -1,6 +1,6 @@
 import { Eko } from "@eko-ai/eko";
 import { EkoConfig } from "@eko-ai/eko/types";
-import { tools, getLLMConfig } from "@eko-ai/eko/extension";
+import { getLLMConfig } from "@eko-ai/eko/extension";
 
 export async function main() {
   // Load LLM model configuration 
