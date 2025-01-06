@@ -1,9 +1,9 @@
 import Eko from "@eko-ai/eko";
-import { getAllTools } from "@eko-ai/eko/extension";
+import { loadTools } from "@eko-ai/eko/extension";
 import { main } from "./first_workflow";
 
 // Register tools
-Eko.tools = getAllTools();
+Eko.tools = loadTools();
 
 // Listen to messages from the browser extension
 chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
