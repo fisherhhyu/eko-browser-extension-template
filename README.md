@@ -1,10 +1,21 @@
 # **Eko Chromium Extension**
 
-Eko Keeps Operating - Empowering language to transform human words into action - eko.fellou.ai
+This is the chromium extension template for [eko](https://github.com/FellouAI/eko)(natural language agent programming framework) workflow development.
 
 ## Setup
 ```
-npm install
+# install cli (used to initialize browser extension projects)
+pnpm install @eko-ai/eko-cli -g
+# initialize project
+eko-cli init browser-extension-demo
 
-npm run build:dev
+cd browser-extension-demo
+# install dependencies
+pnpm install
+
+# run
+pnpm run build:dev
+
+# build
+pnpm run build
 ```
