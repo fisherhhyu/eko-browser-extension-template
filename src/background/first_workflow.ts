@@ -7,7 +7,8 @@ export async function main() {
   // the current browser plugin project provides a page for configuring LLM parameters
   let config = await getLLMConfig();
   if (!config && !config.apiKey) {
-    throw Error("Please configure apiKey");
+    printLog("Please configure apiKey", "error");
+    return;
   }
 
   // Initialize eko
@@ -15,7 +16,7 @@ export async function main() {
 
   // Generate a workflow from natural language description
   const workflow = await eko.generate(`
-    Search Sam Altman's information and summarize it into markdown format for export
+    Your Workflow
   `);
 
   // Execute the workflow
@@ -26,30 +27,30 @@ function hookLogs(): WorkflowCallback {
   return {
     hooks: {
       beforeWorkflow: async (workflow) => {
-        log("Start workflow: " + workflow.name);
+        printLog("Start workflow: " + workflow.name);
       },
       beforeSubtask: async (subtask, context) => {
-        log("> subtask: " + subtask.name);
+        printLog("> subtask: " + subtask.name);
       },
       beforeToolUse: async (tool, context, input) => {
-        log("> tool: " + tool.name);
+        printLog("> tool: " + tool.name);
         return input;
       },
       afterToolUse: async (tool, context, result) => {
-        log("  tool: " + tool.name + " completed", "success");
+        printLog("  tool: " + tool.name + " completed", "success");
         return result;
       },
       afterSubtask: async (subtask, context, result) => {
-        log("  subtask: " + subtask.name + " completed", "success");
+        printLog("  subtask: " + subtask.name + " completed", "success");
         return result;
       },
       afterWorkflow: async (workflow, variables) => {
-        log("Completed", "success");
+        printLog("Completed", "success");
       },
     },
   };
 }
 
-function log(log: string, level = "info") {
-  chrome.runtime.sendMessage({ type: "log", log, level });
+function printLog(log: string, level?: "info" | "success" | "error") {
+  chrome.runtime.sendMessage({ type: "log", log, level: level || "info" });
 }
