@@ -6,7 +6,7 @@ export async function main() {
   // Load LLM model configuration
   // the current browser plugin project provides a page for configuring LLM parameters
   let config = await getLLMConfig();
-  if (!config && !config.apiKey) {
+  if (!config || !config.apiKey) {
     printLog("Please configure apiKey", "error");
     return;
   }
@@ -34,6 +34,7 @@ function hookLogs(): WorkflowCallback {
       },
       beforeToolUse: async (tool, context, input) => {
         printLog("> tool: " + tool.name);
+        context.next();
         return input;
       },
       afterToolUse: async (tool, context, result) => {
@@ -42,7 +43,6 @@ function hookLogs(): WorkflowCallback {
       },
       afterSubtask: async (subtask, context, result) => {
         printLog("  subtask: " + subtask.name + " completed", "success");
-        return result;
       },
       afterWorkflow: async (workflow, variables) => {
         printLog("Completed", "success");
