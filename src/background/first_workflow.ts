@@ -34,7 +34,6 @@ function hookLogs(): WorkflowCallback {
       },
       beforeToolUse: async (tool, context, input) => {
         printLog("> tool: " + tool.name);
-        context.next();
         return input;
       },
       afterToolUse: async (tool, context, result) => {
