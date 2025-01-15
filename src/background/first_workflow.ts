@@ -2,7 +2,7 @@ import { Eko } from "@eko-ai/eko";
 import { EkoConfig, WorkflowCallback } from "@eko-ai/eko/types";
 import { getLLMConfig } from "@eko-ai/eko/extension";
 
-export async function main() {
+export async function run_workflow(prompt: string) {
   // Load LLM model configuration
   // the current browser plugin project provides a page for configuring LLM parameters
   let config = await getLLMConfig();
@@ -15,9 +15,7 @@ export async function main() {
   let eko = new Eko(config as EkoConfig);
 
   // Generate a workflow from natural language description
-  const workflow = await eko.generate(`
-    Your Workflow
-  `);
+  const workflow = await eko.generate(prompt);
 
   // Execute the workflow
   await eko.execute(workflow, hookLogs());

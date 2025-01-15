@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import React, { useState, useRef, useEffect } from "react";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 
 interface LogMessage {
   time: string;
@@ -9,20 +9,27 @@ interface LogMessage {
 }
 
 const AppRun = () => {
-  const [isRunning, setIsRunning] = useState(false);
+  const [running, setRunning] = useState(false);
   const [logs, setLogs] = useState<LogMessage[]>([]);
   const logsRef = useRef<HTMLDivElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [prompt, setPrompt] = useState(
+    "Search Sam Altman's information and summarize it into markdown format for export"
+  );
 
   useEffect(() => {
-    chrome.storage.local.get(["isRunning"], (result) => {
-      if (result.isRunning !== undefined) {
-        setIsRunning(result.isRunning);
+    chrome.storage.local.get(["running", "prompt"], (result) => {
+      if (result.running !== undefined) {
+        setRunning(result.running);
+      }
+      if (result.prompt !== undefined) {
+        setPrompt(result.prompt);
       }
     });
     const messageListener = (message: any) => {
       if (message.type === "stop") {
-        setIsRunning(false);
-        chrome.storage.local.set({ isRunning: false });
+        setRunning(false);
+        chrome.storage.local.set({ running: false });
       } else if (message.type === "log") {
         const time = new Date().toLocaleTimeString();
         setLogs((prev) => [
@@ -44,10 +51,13 @@ const AppRun = () => {
   }, [logs]);
 
   const handleClick = () => {
+    if (!prompt.trim()) {
+      return;
+    }
     setLogs([]);
-    setIsRunning(true);
-    chrome.storage.local.set({ isRunning: true });
-    chrome.runtime.sendMessage({ type: "run" });
+    setRunning(true);
+    chrome.storage.local.set({ running: true, prompt });
+    chrome.runtime.sendMessage({ type: "run", prompt: prompt.trim() });
   };
 
   const getLogStyle = (level: string) => {
@@ -64,7 +74,7 @@ const AppRun = () => {
   return (
     <div
       style={{
-        minWidth: "200px",
+        minWidth: "360px",
         minHeight: "80px",
       }}
     >
@@ -73,14 +83,24 @@ const AppRun = () => {
           textAlign: "center",
         }}
       >
-        <h3>Click to test</h3>
+        <h3>Eko Workflow</h3>
+        <Input.TextArea
+          ref={textAreaRef}
+          rows={4}
+          value={prompt}
+          disabled={running}
+          placeholder="Your workflow"
+          onChange={(e) => setPrompt(e.target.value)}
+        />
         <Button
           type="primary"
           onClick={handleClick}
-          disabled={isRunning}
-          className="flex items-center justify-center"
+          disabled={running}
+          style={{
+            marginTop: "4px",
+          }}
         >
-          {isRunning ? "Running..." : "Run"}
+          {running ? "Running..." : "Run"}
         </Button>
       </div>
       {logs.length > 0 && (
