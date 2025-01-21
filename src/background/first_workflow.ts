@@ -2,7 +2,7 @@ import { Eko } from "@eko-ai/eko";
 import { EkoConfig, WorkflowCallback } from "@eko-ai/eko/types";
 import { getLLMConfig } from "@eko-ai/eko/extension";
 
-export async function run_workflow(prompt: string) {
+export async function main(prompt: string) {
   // Load LLM model configuration
   // the current browser plugin project provides a page for configuring LLM parameters
   let config = await getLLMConfig();

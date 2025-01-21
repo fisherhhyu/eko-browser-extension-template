@@ -1,6 +1,6 @@
 import Eko from "@eko-ai/eko";
 import { loadTools } from "@eko-ai/eko/extension";
-import { run_workflow } from "./first_workflow";
+import { main } from "./first_workflow";
 
 chrome.storage.local.set({ running: false });
 
@@ -18,7 +18,7 @@ chrome.runtime.onMessage.addListener(async function (
       // Click the RUN button to execute the main function (workflow)
       chrome.runtime.sendMessage({ type: "log", log: "Run..." });
       // Run workflow
-      await run_workflow(request.prompt);
+      await main(request.prompt);
     } catch (e) {
       chrome.runtime.sendMessage({
         type: "log",
