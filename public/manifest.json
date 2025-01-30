@@ -28,6 +28,7 @@
   "permissions": [
     "alarms",
     "tabs",
+    "activeTab",
     "windows",
     "storage",
     "scripting",
