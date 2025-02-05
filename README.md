@@ -13,9 +13,9 @@ cd browser-extension-demo
 # install dependencies
 pnpm install
 
-# run
+# build
 pnpm run build:dev
 
-# build
-pnpm run build
+# Depends on local eko build
+# pnpm run build:dev_eko
 ```
