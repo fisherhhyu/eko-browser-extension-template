@@ -1,5 +1,5 @@
 import { Eko } from "@eko-ai/eko";
-import { EkoConfig, WorkflowCallback } from "@eko-ai/eko/types";
+import { LLMConfig, WorkflowCallback } from "@eko-ai/eko/types";
 import { getLLMConfig } from "@eko-ai/eko/extension";
 
 export async function main(prompt: string) {
@@ -12,7 +12,7 @@ export async function main(prompt: string) {
   }
 
   // Initialize eko
-  let eko = new Eko(config as EkoConfig);
+  let eko = new Eko(config as LLMConfig);
 
   // Generate a workflow from natural language description
   const workflow = await eko.generate(prompt);
