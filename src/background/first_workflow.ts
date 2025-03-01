@@ -11,23 +11,16 @@ class MyChromeProxy {
 
 export async function main(prompt: string) {
   let chromeProxy = createChromeApiProxy(MyChromeProxy);
-  // Load LLM model configuration
-  // the current browser plugin project provides a page for configuring LLM parameters
   let config = await getLLMConfig(chromeProxy);
   if (!config || !config.apiKey) {
     printLog("Please configure apiKey", "error");
     return;
   }
 
-  // Initialize eko
-  // let eko = new Eko(config as LLMConfig, { chromeProxy });
   let eko = new Eko(config as LLMConfig, { callback: hookLogs(), chromeProxy: chromeProxy });
 
-  // Generate a workflow from natural language description
   const workflow = await eko.generate(prompt);
 
-  // Execute the workflow
-  // await eko.execute(workflow, hookLogs());
   await eko.execute(workflow);
 }
 
