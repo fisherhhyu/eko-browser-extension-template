@@ -47,6 +47,9 @@ function hookLogs(): WorkflowCallback {
       afterWorkflow: async (workflow, variables) => {
         printLog("Completed", "success");
       },
+      onLlmMessage: async (textContent) => {
+        printLog("LLM: " + textContent);
+      },
     },
   };
 }
