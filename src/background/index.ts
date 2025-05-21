@@ -1,11 +1,9 @@
-import Eko from "@eko-ai/eko";
-import { loadTools } from "@eko-ai/eko/extension";
-import { main } from "./first_workflow";
+import { Eko } from "@eko-ai/eko";
+import { main } from "./main";
+
+var eko: Eko;
 
 chrome.storage.local.set({ running: false });
-
-// Register tools
-Eko.tools = loadTools();
 
 // Listen to messages from the browser extension
 chrome.runtime.onMessage.addListener(async function (
@@ -18,17 +16,22 @@ chrome.runtime.onMessage.addListener(async function (
       // Click the RUN button to execute the main function (workflow)
       chrome.runtime.sendMessage({ type: "log", log: "Run..." });
       // Run workflow
-      await main(request.prompt);
+      eko = await main(request.prompt);
     } catch (e) {
       console.error(e);
       chrome.runtime.sendMessage({
         type: "log",
-        log: e.message,
+        log: e + "",
         level: "error",
       });
-    } finally {
-      chrome.storage.local.set({ running: false });
-      chrome.runtime.sendMessage({ type: "stop" });
     }
+  } else if (request.type == "stop") {
+    eko && eko.getAllTaskId().forEach(taskId => {
+      eko.abortTask(taskId);
+      chrome.runtime.sendMessage({ type: "log", log: "Abort taskId: " + taskId });
+    });
+    chrome.runtime.sendMessage({ type: "log", log: "Stop" });
   }
 });
+
+(chrome as any).sidePanel && (chrome as any).sidePanel.setPanelBehavior({ openPanelOnActionClick: true });

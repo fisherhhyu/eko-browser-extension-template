@@ -11,10 +11,10 @@ interface LogMessage {
 const AppRun = () => {
   const [running, setRunning] = useState(false);
   const [logs, setLogs] = useState<LogMessage[]>([]);
-  const logsRef = useRef<HTMLDivElement>(null);
+  const [streamLog, setStreamLog] = useState<LogMessage | null>();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [prompt, setPrompt] = useState(
-    "Search Sam Altman's information and summarize it into markdown format for export"
+    'Open Twitter, search for "Fellou AI" and follow'
   );
 
   useEffect(() => {
@@ -27,15 +27,25 @@ const AppRun = () => {
       }
     });
     const messageListener = (message: any) => {
+      if (!message) {
+        return;
+      }
       if (message.type === "stop") {
         setRunning(false);
         chrome.storage.local.set({ running: false });
       } else if (message.type === "log") {
         const time = new Date().toLocaleTimeString();
-        setLogs((prev) => [
-          ...prev,
-          { time, log: message.log, level: message.level || "info" },
-        ]);
+        const log_message = {
+          time,
+          log: message.log,
+          level: message.level || "info",
+        };
+        if (message.stream) {
+          setStreamLog(log_message);
+        } else {
+          setStreamLog(null);
+          setLogs((prev) => [...prev, log_message]);
+        }
       }
     };
     chrome.runtime.onMessage.addListener(messageListener);
@@ -45,12 +55,19 @@ const AppRun = () => {
   }, []);
 
   useEffect(() => {
-    if (logsRef.current) {
-      logsRef.current.scrollTop = logsRef.current.scrollHeight;
-    }
-  }, [logs]);
+    window.scrollTo({
+      behavior: "smooth",
+      top: document.body.scrollHeight,
+    });
+  }, [logs, streamLog]);
 
   const handleClick = () => {
+    if (running) {
+      setRunning(false);
+      chrome.storage.local.set({ running: false, prompt });
+      chrome.runtime.sendMessage({ type: "stop" });
+      return;
+    }
     if (!prompt.trim()) {
       return;
     }
@@ -95,9 +112,9 @@ const AppRun = () => {
         <Button
           type="primary"
           onClick={handleClick}
-          disabled={running}
           style={{
             marginTop: "8px",
+            background: running ? "#6666" : "#1677ff",
           }}
         >
           {running ? "Running..." : "Run"}
@@ -105,7 +122,6 @@ const AppRun = () => {
       </div>
       {logs.length > 0 && (
         <div
-          ref={logsRef}
           style={{
             marginTop: "16px",
             textAlign: "left",
@@ -118,18 +134,32 @@ const AppRun = () => {
         >
           <div style={{ fontWeight: "bold", marginBottom: "8px" }}>Logs:</div>
           {logs.map((log, index) => (
-            <div
+            <pre
               key={index}
               style={{
+                margin: "2px 0",
                 fontSize: "12px",
-                marginBottom: "4px",
                 fontFamily: "monospace",
+                whiteSpace: "pre-wrap",
                 ...getLogStyle(log.level || "info"),
               }}
             >
               [{log.time}] {log.log}
-            </div>
+            </pre>
           ))}
+          {streamLog && (
+            <pre
+              style={{
+                margin: "2px 0",
+                fontSize: "12px",
+                fontFamily: "monospace",
+                whiteSpace: "pre-wrap",
+                ...getLogStyle(streamLog.level || "info"),
+              }}
+            >
+              [{streamLog.time}] {streamLog.log}
+            </pre>
+          )}
         </div>
       )}
     </div>
