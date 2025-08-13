@@ -1,6 +1,6 @@
 {
-  "name": "Eko agent",
-  "description": "Eko Agent Extension",
+  "name": "TSAFo",
+  "description": "TSAFo",
   "version": "2.0",
   "manifest_version": 3,
   "background": {

@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "eko browser extension",
   "scripts": {
+    "prebuild": "node scripts/gen-ico.mjs",
     "build": "webpack --config webpack.js"
   },
   "author": "FellouAI",
@@ -12,11 +13,13 @@
     "eko"
   ],
   "dependencies": {
+    "@eko-ai/eko": "^2.0.9",
+    "@eko-ai/eko-extension": "^2.0.9",
     "antd": "^5.22.4",
+    "jimp": "^0.22.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@eko-ai/eko": "^2.0.9",
-    "@eko-ai/eko-extension": "^2.0.9"
+    "to-ico": "^1.1.5"
   },
   "devDependencies": {
     "@types/chrome": "0.0.158",
