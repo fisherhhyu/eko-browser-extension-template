@@ -109,16 +109,28 @@ const AppRun = () => {
           placeholder="Your workflow"
           onChange={(e) => setPrompt(e.target.value)}
         />
-        <Button
-          type="primary"
-          onClick={handleClick}
-          style={{
-            marginTop: "8px",
-            background: running ? "#6666" : "#1677ff",
-          }}
-        >
-          {running ? "Running..." : "Run"}
-        </Button>
+        <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "8px" }}>
+          <Button
+            type="primary"
+            onClick={handleClick}
+            style={{
+              background: running ? "#6666" : "#1677ff",
+            }}
+          >
+            {running ? "Running..." : "Run"}
+          </Button>
+          {running && (
+            <Button
+              danger
+              onClick={() => {
+                chrome.storage.local.set({ running: false });
+                chrome.runtime.sendMessage({ type: "stop" });
+              }}
+            >
+              中止任务
+            </Button>
+          )}
+        </div>
       </div>
       {logs.length > 0 && (
         <div
