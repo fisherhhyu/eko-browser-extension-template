@@ -3,7 +3,7 @@
 ## 1. 程序调用链关系
 
 ```mermaid
-graph TD
+flowchart TD
     A[用户界面 - sidebar/index.tsx] -->|点击Run按钮| B[发送消息 - type:run]
     B --> C[background/index.ts]
     C -->|调用| D[main函数 - background/main.ts]
@@ -12,7 +12,7 @@ graph TD
     F -->|配置| G[LLMs配置]
     F -->|配置| H[BrowserAgent]
     F -->|配置| I[回调函数]
-    F -->|执行| J[eko.run(prompt)]
+    F -->|执行| J[eko.run-prompt]
     J -->|结果处理| K[printLog]
     K -->|发送消息| L[chrome.runtime.sendMessage]
     L --> A
